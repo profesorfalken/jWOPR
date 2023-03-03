@@ -31,16 +31,16 @@ import java.util.Map;
 public class ChatGptProvider implements AIProvider {
 
     //The URL to the ChatGPT API
-    private static String OPEN_API_COMPLETION_URL = "https://api.openai.com/v1/completions";
+    private static final String OPEN_API_COMPLETION_URL = "https://api.openai.com/v1/completions";
 
     //Template for a completion payload
-    private static String ASK_PAYLOAD = "{\"model\": \"{model}\",\"prompt\": \"{prompt}\",\"temperature\": {temperature},\"max_tokens\": {maxTokens}}";
+    private static final String ASK_PAYLOAD = "{\"model\": \"{model}\",\"prompt\": \"{prompt}\",\"temperature\": {temperature},\"max_tokens\": {maxTokens}}";
 
     //Reference to the client used to send the payload
-    private ConnectionClient connectionClient;
+    protected ConnectionClient connectionClient;
 
     //The configuration of the provider
-    private Map<String, String> configuration;
+    protected Map<String, String> configuration;
 
     //Constructor
     public ChatGptProvider(ConnectionClient connectionClient) {
@@ -59,7 +59,7 @@ public class ChatGptProvider implements AIProvider {
     public WOPRResponse ask(String prompt) {
         //Set auth key in Authorization header
         Map<String, String> headers = new HashMap<>();
-        headers.put("Authorization", ConnectionUtil.createBearerAuthHeaderValue(this.configuration.get("authToken")));
+        headers.put("Authorization", ConnectionUtil.createBearerAuthHeaderValue(getAuthToken()));
 
         return this.connectionClient.post(OPEN_API_COMPLETION_URL, computeAskPayload(prompt), getMapper(), headers);
     }
@@ -96,5 +96,17 @@ public class ChatGptProvider implements AIProvider {
     @Override
     public WOPRResponseMapper getMapper() {
         return new ChatGptWOPRResponseMapper();
+    }
+
+    //Get the authorization token for Chat GPT API session
+    private String getAuthToken() {
+        String authToken = System.getenv("CHATGPT_AUTHTOKEN");
+
+        //Override by configuration
+        if (this.configuration.get("authToken") != null) {
+            authToken = this.configuration.get("authToken");
+        }
+
+        return authToken;
     }
 }

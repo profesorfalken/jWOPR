@@ -21,10 +21,12 @@ import com.profesorfalken.jwopr.response.WOPRResponse;
 import java.util.Map;
 
 /**
- * This library allows to interact with an AI provider.<p>
+ * This library allows to interact with an AI provider.<p></p>
  * <p>
  * The current implementation allows to interact with the following AI engines:
+ * <ul>
  * <li>ChatGPT</li>
+ * </ul>
  *
  * @author Javier Garcia Alonso
  */

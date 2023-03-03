@@ -18,6 +18,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class WOPRTest {
+    private static final String PARSE_JSON_ERROR_MSG = "We could not parse the JSON body of your request. (HINT: This likely means you aren't using your HTTP library correctly. The OpenAI API expects a JSON payload, but what was sent was not valid JSON. If you have trouble figuring out how to fix this, please send an email to support@openai.com and include any relevant code you'd like help with.)";
+
     WOPR wopr = WOPR.get();
 
     @Test
@@ -31,9 +33,8 @@ class WOPRTest {
 
         WOPRResponse woprResponse = brokenWopr.ask("Say 'This is a test.'");
 
-        String expectedErrorMessage = "We could not parse the JSON body of your request. (HINT: This likely means you aren't using your HTTP library correctly. The OpenAI API expects a JSON payload, but what was sent was not valid JSON. If you have trouble figuring out how to fix this, please send an email to support@openai.com and include any relevant code you'd like help with.)";
         Assertions.assertNull(woprResponse.getText());
-        Assertions.assertEquals(expectedErrorMessage, brokenWopr.ask("Say 'This is a test.'").getError());
+        Assertions.assertEquals(PARSE_JSON_ERROR_MSG, brokenWopr.ask("Say 'This is a test.'").getError());
     }
 
     @Test
@@ -53,9 +54,8 @@ class WOPRTest {
     public void testConfigFileNotFound() {
         WOPR brokenWopr = WOPR.get();
 
-        Exception e = assertThrows(WOPRException.class, () -> {
-            brokenWopr.withProvider(new BadConfigChatGptProvider()).ask("Say 'This is a test.'");
-        });
+        Exception e = assertThrows(WOPRException.class,
+                () -> brokenWopr.withProvider(new BadConfigChatGptProvider()).ask("Say 'This is a test.'"));
 
         assertEquals("Cannot load jWOPR base configuration file: [jwopr_configuration.properties]", e.getMessage());
     }
@@ -64,9 +64,8 @@ class WOPRTest {
     public void testMissingConfigProperty() {
         WOPRResponse woprResponse = WOPR.get().withProvider(new MissingPropertiesChatGptProvider()).ask("Say 'This is a test.'");
 
-        String expectedErrorMessage = "Incorrect API key provided: null. You can find your API key at https://platform.openai.com/account/api-keys.";
         Assertions.assertNull(woprResponse.getText());
-        Assertions.assertEquals(expectedErrorMessage, woprResponse.getError());
+        Assertions.assertEquals(PARSE_JSON_ERROR_MSG, woprResponse.getError());
     }
 
     @Test
@@ -88,7 +87,7 @@ class WOPRTest {
         if (m.find()) {
             result = m.group(1);
         }
-        String expectedErrorMessage = "We could not parse the JSON body of your request. (HINT: This likely means you aren't using your HTTP library correctly. The OpenAI API expects a JSON payload, but what was sent was not valid JSON. If you have trouble figuring out how to fix this, please send an email to support@openai.com and include any relevant code you'd like help with.)";
-        Assertions.assertEquals(expectedErrorMessage, result);
+
+        Assertions.assertEquals(PARSE_JSON_ERROR_MSG, result);
     }
 }

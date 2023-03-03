@@ -38,7 +38,7 @@ public class ChatGptWOPRResponseMapper implements WOPRResponseMapper {
     /**
      * Builds a {{@link WOPRResponse}} object from the API response
      *
-     * @param connection
+     * @param connection the HTTP connection
      * @return {{@link WOPRResponse}} object encapsulating the response of the AI
      * @throws IOException I/O exception
      */
