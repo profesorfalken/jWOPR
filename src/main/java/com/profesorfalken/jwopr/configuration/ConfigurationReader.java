@@ -34,21 +34,21 @@ public class ConfigurationReader {
     private static final String LOAD_ERROR_MSG = String.format("Cannot load jWOPR base configuration file: [%s]", JWOPR_CONFIG_FILE);
 
     /**
-     * Reads the configuration parameters for the ChatGPT provider
+     * Reads the configuration parameters for the OpenAI provider
      *
-     * @return {{@link Map}} with the default parameters for ChatGPT API
+     * @return {{@link Map}} with the default parameters for OpenAI API
      */
-    public static Map<String, String> getChatGptConfiguration() {
-        return getChatGptConfiguration(null);
+    public static Map<String, String> getOpenAIConfiguration() {
+        return getOpenAIConfiguration(null);
     }
 
     /**
-     * Reads the configuration parameters for the ChatGPT provider
+     * Reads the configuration parameters for the OpenAI provider
      *
      * @param configFileName custom name of the configuration file
-     * @return {{@link Map}} with the default parameters for ChatGPT API
+     * @return {{@link Map}} with the default parameters for OpenAI API
      */
-    public static Map<String, String> getChatGptConfiguration(String configFileName) {
+    public static Map<String, String> getOpenAIConfiguration(String configFileName) {
         Map<String, String> baseConfiguration = new HashMap<>();
         String configFile = configFileName != null ? configFileName : JWOPR_CONFIG_FILE;
 
@@ -61,10 +61,10 @@ public class ConfigurationReader {
 
             prop.load(input);
 
-            baseConfiguration.put("authToken", prop.getProperty("chatgpt.authToken"));
-            baseConfiguration.put("model", prop.getProperty("chatgpt.model"));
-            baseConfiguration.put("temperature", prop.getProperty("chatgpt.temperature"));
-            baseConfiguration.put("maxTokens", prop.getProperty("chatgpt.maxTokens"));
+            baseConfiguration.put("authToken", prop.getProperty("openai.authToken"));
+            baseConfiguration.put("model", prop.getProperty("openai.model"));
+            baseConfiguration.put("temperature", prop.getProperty("openai.temperature"));
+            baseConfiguration.put("maxTokens", prop.getProperty("openai.maxTokens"));
 
         } catch (IOException e) {
             throw new WOPRException(LOAD_ERROR_MSG, e);

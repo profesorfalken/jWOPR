@@ -4,7 +4,7 @@
 
 Simple Java API that allows you to interact with different AI providers as:
 
-- OpenAI - ChatGPT
+- OpenAI
 
 Quick example:
 

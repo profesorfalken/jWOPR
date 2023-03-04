@@ -1,9 +1,9 @@
 package com.profesorfalken.jwopr.integration;
 
 import com.profesorfalken.jwopr.WOPR;
-import com.profesorfalken.jwopr.aiprovider.integration.BadConfigChatGptProvider;
-import com.profesorfalken.jwopr.aiprovider.integration.BrokenChatGptProvider;
-import com.profesorfalken.jwopr.aiprovider.integration.MissingPropertiesChatGptProvider;
+import com.profesorfalken.jwopr.aiprovider.integration.BadConfigOpenAIProvider;
+import com.profesorfalken.jwopr.aiprovider.integration.BrokenOpenAIProvider;
+import com.profesorfalken.jwopr.aiprovider.integration.MissingPropertiesOpenAIProvider;
 import com.profesorfalken.jwopr.exception.WOPRException;
 import com.profesorfalken.jwopr.response.WOPRResponse;
 import org.junit.jupiter.api.Assertions;
@@ -24,12 +24,15 @@ class WOPRTest {
 
     @Test
     public void testAsk() {
-        Assertions.assertEquals("This is a test.", wopr.ask("Say 'This is a test.'").getText());
+        WOPRResponse woprResponse = wopr.ask("Say 'This is a test.'");
+
+        Assertions.assertNull(woprResponse.getError());
+        Assertions.assertEquals("This is a test.", woprResponse.getText());
     }
 
     @Test
     public void testBadRequest() {
-        WOPR brokenWopr = WOPR.get().withProvider(new BrokenChatGptProvider());
+        WOPR brokenWopr = WOPR.get().withProvider(new BrokenOpenAIProvider());
 
         WOPRResponse woprResponse = brokenWopr.ask("Say 'This is a test.'");
 
@@ -41,7 +44,7 @@ class WOPRTest {
     public void testNoApiKey() {
         Map<String, String> configuration = new HashMap<>();
         configuration.put("authToken", "");
-        WOPR brokenWopr = WOPR.get().withProvider(new BrokenChatGptProvider()).withConfiguration(configuration);
+        WOPR brokenWopr = WOPR.get().withProvider(new BrokenOpenAIProvider()).withConfiguration(configuration);
 
         WOPRResponse woprResponse = brokenWopr.ask("Say 'This is a test.'");
 
@@ -55,14 +58,14 @@ class WOPRTest {
         WOPR brokenWopr = WOPR.get();
 
         Exception e = assertThrows(WOPRException.class,
-                () -> brokenWopr.withProvider(new BadConfigChatGptProvider()).ask("Say 'This is a test.'"));
+                () -> brokenWopr.withProvider(new BadConfigOpenAIProvider()).ask("Say 'This is a test.'"));
 
         assertEquals("Cannot load jWOPR base configuration file: [jwopr_configuration.properties]", e.getMessage());
     }
 
     @Test
     public void testMissingConfigProperty() {
-        WOPRResponse woprResponse = WOPR.get().withProvider(new MissingPropertiesChatGptProvider()).ask("Say 'This is a test.'");
+        WOPRResponse woprResponse = WOPR.get().withProvider(new MissingPropertiesOpenAIProvider()).ask("Say 'This is a test.'");
 
         Assertions.assertNull(woprResponse.getText());
         Assertions.assertEquals(PARSE_JSON_ERROR_MSG, woprResponse.getError());

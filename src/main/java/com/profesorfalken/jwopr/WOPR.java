@@ -14,7 +14,7 @@
 package com.profesorfalken.jwopr;
 
 import com.profesorfalken.jwopr.aiprovider.AIProvider;
-import com.profesorfalken.jwopr.aiprovider.ChatGptProvider;
+import com.profesorfalken.jwopr.aiprovider.OpenAIProvider;
 import com.profesorfalken.jwopr.connection.BareJavaConnectionClient;
 import com.profesorfalken.jwopr.response.WOPRResponse;
 
@@ -25,7 +25,7 @@ import java.util.Map;
  * <p>
  * The current implementation allows to interact with the following AI engines:
  * <ul>
- * <li>ChatGPT</li>
+ * <li>OpenAI</li>
  * </ul>
  *
  * @author Javier Garcia Alonso
@@ -81,10 +81,10 @@ public class WOPR {
         return this.getProvider().ask(prompt);
     }
 
-    //Retrieves the AI provider (ChatGPT by default)
+    //Retrieves the AI provider (OpenAI by default)
     private AIProvider getProvider() {
         if (this.aiProvider == null) {
-            this.aiProvider = new ChatGptProvider(new BareJavaConnectionClient());
+            this.aiProvider = new OpenAIProvider(new BareJavaConnectionClient());
         }
         return this.aiProvider;
     }

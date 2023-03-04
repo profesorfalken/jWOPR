@@ -28,11 +28,11 @@ import java.util.regex.Pattern;
  *
  * @author Javier Garcia Alonso
  */
-public class ChatGptWOPRResponseMapper implements WOPRResponseMapper {
-    //Pattern to retrieve the text value from ChatGpt provider
+public class OpenAIWOPRResponseMapper implements WOPRResponseMapper {
+    //Pattern to retrieve the text value from OpenAI provider
     private static final Pattern EXTRACT_TEXT_PATTERN = Pattern.compile("\"text\":\"(.*?)\",\"index\":");
 
-    //Pattern to retrieve the error message value from ChatGpt provider
+    //Pattern to retrieve the error message value from OpenAI provider
     private static final Pattern EXTRACT_ERROR_PATTERN = Pattern.compile("\"message\":.\"(.*?)\"");
 
     /**

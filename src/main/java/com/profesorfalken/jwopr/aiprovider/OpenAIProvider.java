@@ -16,7 +16,7 @@ package com.profesorfalken.jwopr.aiprovider;
 import com.profesorfalken.jwopr.configuration.ConfigurationReader;
 import com.profesorfalken.jwopr.connection.ConnectionClient;
 import com.profesorfalken.jwopr.connection.ConnectionUtil;
-import com.profesorfalken.jwopr.mapper.ChatGptWOPRResponseMapper;
+import com.profesorfalken.jwopr.mapper.OpenAIWOPRResponseMapper;
 import com.profesorfalken.jwopr.mapper.WOPRResponseMapper;
 import com.profesorfalken.jwopr.response.WOPRResponse;
 
@@ -24,13 +24,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * AI provider based in ChatGPT API.
+ * AI provider based in OpenAI API.
  *
  * @author Javier Garcia Alonso
  */
-public class ChatGptProvider implements AIProvider {
+public class OpenAIProvider implements AIProvider {
 
-    //The URL to the ChatGPT API
+    //The URL to the OpenAI completions API
     private static final String OPEN_API_COMPLETION_URL = "https://api.openai.com/v1/completions";
 
     //Template for a completion payload
@@ -43,10 +43,10 @@ public class ChatGptProvider implements AIProvider {
     protected Map<String, String> configuration;
 
     //Constructor
-    public ChatGptProvider(ConnectionClient connectionClient) {
+    public OpenAIProvider(ConnectionClient connectionClient) {
         this.connectionClient = connectionClient;
 
-        this.configuration = ConfigurationReader.getChatGptConfiguration();
+        this.configuration = ConfigurationReader.getOpenAIConfiguration();
     }
 
     /**
@@ -95,12 +95,12 @@ public class ChatGptProvider implements AIProvider {
      */
     @Override
     public WOPRResponseMapper getMapper() {
-        return new ChatGptWOPRResponseMapper();
+        return new OpenAIWOPRResponseMapper();
     }
 
     //Get the authorization token for Chat GPT API session
     private String getAuthToken() {
-        String authToken = System.getenv("CHATGPT_AUTHTOKEN");
+        String authToken = System.getenv("OPENAI_API_KEY");
 
         //Override by configuration
         if (this.configuration.get("authToken") != null) {

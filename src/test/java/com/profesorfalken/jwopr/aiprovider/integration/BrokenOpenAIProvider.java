@@ -1,15 +1,15 @@
 package com.profesorfalken.jwopr.aiprovider.integration;
 
-import com.profesorfalken.jwopr.aiprovider.ChatGptProvider;
+import com.profesorfalken.jwopr.aiprovider.OpenAIProvider;
 import com.profesorfalken.jwopr.connection.BareJavaConnectionClient;
-import com.profesorfalken.jwopr.mapper.ChatGptWOPRResponseMapper;
+import com.profesorfalken.jwopr.mapper.OpenAIWOPRResponseMapper;
 import com.profesorfalken.jwopr.mapper.WOPRResponseMapper;
 
 import java.util.Map;
 
-public class BrokenChatGptProvider extends ChatGptProvider {
+public class BrokenOpenAIProvider extends OpenAIProvider {
 
-    public BrokenChatGptProvider() {
+    public BrokenOpenAIProvider() {
         super(new BareJavaConnectionClient());
     }
 
@@ -25,6 +25,6 @@ public class BrokenChatGptProvider extends ChatGptProvider {
 
     @Override
     public WOPRResponseMapper getMapper() {
-        return new ChatGptWOPRResponseMapper();
+        return new OpenAIWOPRResponseMapper();
     }
 }
