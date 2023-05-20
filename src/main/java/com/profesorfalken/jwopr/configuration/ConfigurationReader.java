@@ -33,6 +33,10 @@ public class ConfigurationReader {
     //Error message if file cannot be loaded
     private static final String LOAD_ERROR_MSG = String.format("Cannot load jWOPR base configuration file: [%s]", JWOPR_CONFIG_FILE);
 
+    private ConfigurationReader() {
+        //Hide constructor
+    }
+
     /**
      * Reads the configuration parameters for the OpenAI provider
      *

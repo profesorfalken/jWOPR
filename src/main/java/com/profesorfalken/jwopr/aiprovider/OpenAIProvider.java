@@ -72,10 +72,10 @@ public class OpenAIProvider implements AIProvider {
      */
     @Override
     public String computeAskPayload(String prompt) {
-        return ASK_PAYLOAD.replaceAll("\\{prompt\\}", prompt)
-                .replaceAll("\\{model\\}", this.configuration.get("model"))
-                .replaceAll("\\{temperature\\}", this.configuration.get("temperature"))
-                .replaceAll("\\{maxTokens\\}", this.configuration.get("maxTokens"));
+        return ASK_PAYLOAD.replace("\\{prompt\\}", prompt)
+                .replace("\\{model\\}", this.configuration.get("model"))
+                .replace("\\{temperature\\}", this.configuration.get("temperature"))
+                .replace("\\{maxTokens\\}", this.configuration.get("maxTokens"));
     }
 
     /**
